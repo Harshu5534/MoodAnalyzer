@@ -15,7 +15,7 @@ namespace TestMood
         [Test]
         public void GivenInputIsString_WhenTestAnalyseMood_ShouldReturnReturnHappy()
         {
-            MoodAnalyzer analyzer = new MoodAnalyzer("I am in Happy Mood");
+            MoodAnalyzer analyzer = new MoodAnalyzer(null);
             string actual = analyzer.AnalyseMood();
             Assert.Pass(actual, "Happy");
         }
