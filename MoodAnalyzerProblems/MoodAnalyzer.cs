@@ -7,6 +7,10 @@
         {
             this.message = message;
         }
+        public MoodAnalyzer()
+        {
+            this.message = message;
+        }
         public string AnalyseMood()
         {
             try
