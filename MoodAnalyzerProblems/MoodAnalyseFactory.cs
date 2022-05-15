@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MoodAnalyzerProblems
 {
-    public class MoodAnalyseFactory
+    public class MoodAnalyzerFactory
     {
-        public static object CreateMoodAnalyse(string className,string ConstructorName)
+        public static object CreateMoodAnalyzer(string className, string ConstructorName)
         {
             string pattern = @"." + ConstructorName + "$";
             Match result = Regex.Match(className, pattern);
@@ -19,7 +19,7 @@ namespace MoodAnalyzerProblems
                 try
                 {
                     Assembly executing = Assembly.GetExecutingAssembly();
-                    Type moodAnalyseType=executing.GetType(className);
+                    Type moodAnalyseType = executing.GetType(className);
                     return Activator.CreateInstance(moodAnalyseType);
                 }
                 catch (ArgumentNullException)
@@ -32,15 +32,15 @@ namespace MoodAnalyzerProblems
                 throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.NO_SUCH_METHOD, "Constructor Not Found");
             }
         }
-        public static object CreateMoodAnalyseUsingParameterizedConstrctor(string className, string ConstructorName,string message)
+        public static object CreateMoodAnalyzerUsingParameterizedConstrctor(string className, string ConstructorName, string message)
         {
             Type type = typeof(MoodAnalyzer);
             if (type.Name.Equals(className) || type.FullName.Equals(className))
             {
-                if(type.Name.Equals(ConstructorName))
+                if (type.Name.Equals(ConstructorName))
                 {
                     ConstructorInfo ctor = type.GetConstructor(new[] { typeof(string) });
-                    object instance=ctor.Invoke(new object[] { message });
+                    object instance = ctor.Invoke(new object[] { message });
                     return instance;
                 }
                 else
@@ -54,6 +54,20 @@ namespace MoodAnalyzerProblems
 
             }
         }
-
+        public static string InvokeAnalyzerMood(string message, string methodName)
+        {
+            try
+            {
+                Type type = Type.GetType("MoodAnalyzerProblems.MoodAnalyzer");
+                object moodAnalyzerObject = MoodAnalyzerFactory.CreateMoodAnalyzerUsingParameterizedConstrctor("MoodAnalyzerProblems.MoodAnalyzer", "MoodAnalyzer", message);
+                MethodInfo analyzerMoodInfo = type.GetMethod(methodName);
+                object mood = analyzerMoodInfo.Invoke(moodAnalyzerObject, null);
+                return mood.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.NO_SUCH_METHOD, "Method is not found");
+            }
+        }
     }
 }

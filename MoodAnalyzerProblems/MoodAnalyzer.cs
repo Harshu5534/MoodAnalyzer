@@ -3,11 +3,11 @@
     public class MoodAnalyzer
     {
         string message;
-        public MoodAnalyzer(string message)
-        {
-            this.message = message;
-        }
         public MoodAnalyzer()
+        {
+
+        }
+        public MoodAnalyzer(string message)
         {
             this.message = message;
         }
